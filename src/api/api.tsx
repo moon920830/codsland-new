@@ -151,15 +151,21 @@ export const StartPayment = async (
   }
 };
 
+interface MemberType {
+    phone: string,
+    type: string,
+    period: number
+}
+
 export const MemberSave = async (
-    formData: any,
+    formData: MemberType,
     enqueueSnackbar: (message: string, options?: object) => void
   ) => {
     try {
       const token = getCookie('token')
-      const response = await axios.post(`${url}/members/save`, {
+      const response = await axios.post(`${url}/members/save`, 
         formData
-      }, {headers: {token:token}});
+      , {headers: {token:token}});
       if (response.data.status == "error") {
         return enqueueSnackbar(
           response.data.error ? response.data.error : "Error",
