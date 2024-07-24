@@ -23,7 +23,6 @@ const stripePromise = loadStripe(payment_key);
 
 const Annual: React.FC = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const [confirm, setConfirm] = useState(false);
   const [phone, setPhone] = useState("");
   
   const [clientSecret, setClientSecret] = useState(null);
@@ -59,9 +58,6 @@ const Annual: React.FC = () => {
       return false;
     }
     return true;
-  }
-  const handlePaymentSuccess = (result: any) => {
-    setConfirm(true);
   }
   return (
     <div className="pt-[200px]">
@@ -122,7 +118,7 @@ const Annual: React.FC = () => {
               stripe={stripePromise}
               options={{ clientSecret: clientSecret }}
             >
-              <PayComponent handlePurchase={handlePaymentSuccess} checkValidation={checkValidation} phone={phone}/>
+              <PayComponent checkValidation={checkValidation} phone={phone}/>
             </Elements>
           )}
         </div>

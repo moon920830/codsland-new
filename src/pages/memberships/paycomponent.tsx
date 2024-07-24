@@ -7,12 +7,11 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { useSnackbar } from "notistack";
-import CircularProgress from "@mui/material/CircularProgress";
+// import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
 
 interface PropsType {
   checkValidation: () => boolean;
-  handlePurchase: (result: any) => void;
   phone: string;
 }
 
@@ -20,7 +19,7 @@ const PayComponent: React.FC<PropsType> = (props) => {
   const stripe = useStripe();
   const elements = useElements();
   const { enqueueSnackbar } = useSnackbar();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+//   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string | null>(null);
   useEffect(() => {
     if (!stripe) {
@@ -53,6 +52,7 @@ const PayComponent: React.FC<PropsType> = (props) => {
     });
   }, [stripe]);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    console.log(message)
     e.preventDefault();
     if (!props.checkValidation()) {
       return;
@@ -82,7 +82,6 @@ const PayComponent: React.FC<PropsType> = (props) => {
     } else {
     //   enqueueSnackbar("Purchase Success", { variant: "success" });
       console.log(result);
-      props.handlePurchase(result);
       const phone = props.phone;
       const formData = { phone, type: 'annual', period: 365 };
       MemberSave(formData, enqueueSnackbar)
