@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Element } from 'react-scroll';
+import { useAuth } from "../context/AuthContext";
+import { useSnackbar } from "notistack";
 
 import Button from "@mui/material/Button";
 import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
@@ -15,9 +17,14 @@ import SelectButton from "../components/home/selectbutton";
 import Footer from "../components/layouts/footer";
 
 const Home: React.FC = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const { token } = useAuth();
   const navigate = useNavigate();
   const handleAnnual = () => {
-    navigate("/membership/annual")
+    if(token == ""){
+      enqueueSnackbar("Login Required", { variant: "error" });
+    }
+    else navigate("/membership/annual")
   }
   return (
     <>
@@ -219,18 +226,18 @@ const Home: React.FC = () => {
               </div>
               <Collapse
                 content="became a naturopathic physician in 1982 because he was determined to treat the causes of people’s ailments. But, he discovered, almost all medical AND naturopathic medical care was designed to bring the medical consumer relief of symptoms. The naturopathic solutions were slower and usually more effective than the others available—but they were often not cures, either. Dr. Howell worked for ten years at his naturopathic family practice before he realized the folly of his commercial naturopathic practice. Commerce and healing could not co-exist, he decided. He closed his large family practice clinic in Everett, WA and slowly began a healing practice, developing...
-                               NeuroCranial Restructuring, a bio-mechanical,
-                               accumulative manipulation technique in the 1990s. He continued to develop and improve his
-                               hands-on healing techniques and has continued exploring healing methods that are out-of-the-
-                               ordinary. Knowing that he had been targeted and had his license revoked for administering
-                               vitamin B-12, Dr Howell set up his healing business outside of the commerce system where
-                               medical licensing boards controlled everything. that he might become legally targeted, he
-                               changed his healing practice into a private membership association. He set this up as NCR-01,
-                               a not-for-profit, private membership association in 2001. More recently, Dr. Howell’s spiritual,
-                               healing path made him realize the depth of his faith. He became religious again. In order to
-                               legally demonstrate their convictions, he and Reverend Rebecca joined the Church of Hope as
-                               Ministers and Sanctified Healers. They were ordained as Eastern Orthodox Catholic ministers in
-                               2019. NCR-01 legally transformed itself into the Church of Divine Structure, Priory No. 175 of the Church of Hope. As members of the Sacred Medical Order of the Knights of Hope, their healing credentials are accepted by the United Nations so that they are accepted as healers anywhere they choose to go."
+                         NeuroCranial Restructuring, a bio-mechanical,
+                         accumulative manipulation technique in the 1990s. He continued to develop and improve his
+                         hands-on healing techniques and has continued exploring healing methods that are out-of-the-
+                         ordinary. Knowing that he had been targeted and had his license revoked for administering
+                         vitamin B-12, Dr Howell set up his healing business outside of the commerce system where
+                         medical licensing boards controlled everything. that he might become legally targeted, he
+                         changed his healing practice into a private membership association. He set this up as NCR-01,
+                         a not-for-profit, private membership association in 2001. More recently, Dr. Howell’s spiritual,
+                         healing path made him realize the depth of his faith. He became religious again. In order to
+                         legally demonstrate their convictions, he and Reverend Rebecca joined the Church of Hope as
+                         Ministers and Sanctified Healers. They were ordained as Eastern Orthodox Catholic ministers in
+                         2019. NCR-01 legally transformed itself into the Church of Divine Structure, Priory No. 175 of the Church of Hope. As members of the Sacred Medical Order of the Knights of Hope, their healing credentials are accepted by the United Nations so that they are accepted as healers anywhere they choose to go."
                 leading={36}
               />
             </div>

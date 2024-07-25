@@ -152,28 +152,63 @@ export const StartPayment = async (
 };
 
 interface MemberType {
-    phone: string,
-    type: string,
-    period: number
+  phone: string;
+  type: string;
+  period: number;
 }
 
 export const MemberSave = async (
-    formData: MemberType,
-    enqueueSnackbar: (message: string, options?: object) => void
-  ) => {
-    try {
-      const token = getCookie('token')
-      const response = await axios.post(`${url}/members/save`, 
-        formData
-      , {headers: {token:token}});
-      if (response.data.status == "error") {
-        return enqueueSnackbar(
-          response.data.error ? response.data.error : "Error",
+  formData: MemberType,
+  enqueueSnackbar: (message: string, options?: object) => void
+) => {
+  try {
+    const token = getCookie("token");
+    const response = await axios.post(`${url}/members/save`, formData, {
+      headers: { token: token },
+    });
+    if (response.data.status == "error") {
+      return enqueueSnackbar(
+        response.data.error ? response.data.error : "Error",
+        { variant: "error" }
+      );
+    }
+    enqueueSnackbar("Purchase Success", { variant: "success" });
+  } catch (error) {
+    enqueueSnackbar("Network Error", { variant: "error" });
+  }
+};
+
+export const GetCategory = async (
+  enqueueSnackbar: (message: string, options?: object) => void
+) => {
+  try {
+    const token = getCookie("token");
+    const response = await axios.get(`${url}/shop/categories`, {
+      headers: { token: token },
+    });
+    if (response.data.status == "error") {
+      if (response.data.error == "NOT_MEMBER") {
+        enqueueSnackbar("Purchase membership please", {
+          variant: "error",
+        });
+        return "error";
+      } else if (response.data.status == "EXPIRED") {
+        enqueueSnackbar(
+          "Membership expired. Please purchase membership again.",
           { variant: "error" }
         );
-      }
-      enqueueSnackbar("Purchase Success", { variant: "success" });
-    } catch (error) {
-      enqueueSnackbar("Network Error", { variant: "error" });
+        return "error";
+      } else {
+        enqueueSnackbar(response.data.error ? response.data.error : "Error", {
+          variant: "error",
+        });
+        return "error";
+      } 
+    } else {
+        return response.data.data;
     }
-  };
+    
+  } catch (error) {
+    enqueueSnackbar("Network Error", { variant: "error" });
+  }
+};

@@ -11,6 +11,7 @@ import NewPassword from './pages/new-password';
 import Register from './pages/register';
 import Schedule from './pages/schedule';
 import Annual from './pages/memberships/annual';
+import Shop from './pages/shop';
 import './index.css'
 
 const App: React.FC = () => {
@@ -27,6 +28,7 @@ const App: React.FC = () => {
           <Route path="/new-password" element={<NewPassword />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/membership/annual" element={<Annual />} />
+          <Route path="/shop" element={<Shop />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

@@ -53,10 +53,18 @@ const Header: React.FC = () => {
       enqueueSnackbar("Login Required", { variant: "error" });
       
     } else {
-      console.log('Navigating to /schedule');
       navigate("/schedule"); // Adjusted to navigate to a schedule page if needed
     }
   };
+
+  const handleShop = () => {
+    if (token === "") {
+      enqueueSnackbar("Login Required", { variant: "error" });
+      
+    } else {
+      navigate("/shop"); // Adjusted to navigate to a schedule page if needed
+    }
+  }
 
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
@@ -73,7 +81,7 @@ const Header: React.FC = () => {
           About
         </Link>
         <Link to="#" className="hover:text-blue-700">
-          Courses
+          Shop
         </Link>
         <Link to="#" onClick={handleSchedule} className="hover:text-blue-700">
           Schedule
@@ -106,9 +114,9 @@ const Header: React.FC = () => {
         <Link to="#" className="hover:text-blue-700" onClick={handleScrollToAbout}>
           About
         </Link>
-        <Link to="#" className="hover:text-blue-700">
-          Courses
-        </Link>
+        <div onClick={handleShop} className="hover:text-blue-700 cursor-pointer">
+          Shop
+        </div>
         <div onClick={handleSchedule} className="hover:text-blue-700 cursor-pointer">
           Schedule
         </div>
