@@ -203,11 +203,82 @@ export const GetCategory = async (
           variant: "error",
         });
         return "error";
-      } 
+      }
     } else {
-        return response.data.data;
+      return response.data.data;
     }
-    
+  } catch (error) {
+    enqueueSnackbar("Network Error", { variant: "error" });
+  }
+};
+
+export const GetProductsByCategory = async (
+  page: number,
+  rowsPerPage: number,
+  categoryId: string,
+  enqueueSnackbar: (message: string, options?: object) => void
+) => {
+  try {
+    const token = getCookie("token");
+    const response = await axios.post(
+      `${url}/shop/products/page`,
+      {
+        page: page,
+        pagesize: rowsPerPage,
+        category: categoryId,
+      },
+      {
+        headers: { token: token },
+      }
+    );
+    if (response.data.status == "error") {
+      return enqueueSnackbar(
+        response.data.error ? response.data.error : "Error",
+        { variant: "error" }
+      );
+    }
+    console.log(response.data.data);
+    return {
+      pagedata: response.data.data.pagedata,
+      page: response.data.data.page,
+      total: response.data.data.total,
+      totalNumbers: response.data.data.totalNumbers,
+    };
+  } catch (error) {
+    enqueueSnackbar("Network Error", { variant: "error" });
+  }
+};
+
+export const GetProductsAll = async (
+  page: number,
+  rowsPerPage: number,
+  enqueueSnackbar: (message: string, options?: object) => void
+) => {
+  try {
+    const token = getCookie("token");
+    const response = await axios.post(
+      `${url}/shop/products/page`,
+      {
+        page: page,
+        pagesize: rowsPerPage,
+      },
+      {
+        headers: { token: token },
+      }
+    );
+    if (response.data.status == "error") {
+      return enqueueSnackbar(
+        response.data.error ? response.data.error : "Error",
+        { variant: "error" }
+      );
+    }
+    return {
+      pagedata: response.data.data.pagedata,
+      page: response.data.data.page,
+      total: response.data.data.total,
+      totalNumbers: response.data.data.totalNumbers,
+      pagesize: response.data.data.pagesize
+    };
   } catch (error) {
     enqueueSnackbar("Network Error", { variant: "error" });
   }
