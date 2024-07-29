@@ -1,5 +1,8 @@
-import React from "react";
+import React, {Dispatch, SetStateAction} from "react";
 import Description from "./description";
+import { useSnackbar } from "notistack";
+
+import { AddToCart } from "../../api/api";
 
 import Rating from "@mui/material/Rating";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -12,11 +15,14 @@ interface CardType {
   title: string;
   description: string;
   price: number;
+  setCartCount:  Dispatch<SetStateAction<number>>;
 }
 const url = "https://cods.land/api/shop/products";
 const ShopCard: React.FC<CardType> = (props) => {
-  const handleAddCart = () => {
-    console.log("hello");
+  const { enqueueSnackbar } = useSnackbar();
+  const handleAddCart = async () => {
+    const count = await AddToCart(props.id, enqueueSnackbar)
+    props.setCartCount(count)
   };
   return (
     <div className="shadow-2xl bg-gray-300 pt-10 pb-5 px-5 h-[550px] flex flex-col">

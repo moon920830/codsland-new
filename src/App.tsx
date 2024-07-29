@@ -12,6 +12,7 @@ import Register from './pages/register';
 import Schedule from './pages/schedule';
 import Annual from './pages/memberships/annual';
 import Shop from './pages/shop';
+import Cart from './pages/shop/cart';
 import './index.css'
 
 const App: React.FC = () => {
@@ -29,6 +30,7 @@ const App: React.FC = () => {
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/membership/annual" element={<Annual />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/shop/cart" element={<Cart />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

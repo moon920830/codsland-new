@@ -221,11 +221,10 @@ export const GetProductsByCategory = async (
   try {
     const token = getCookie("token");
     const response = await axios.post(
-      `${url}/shop/products/page`,
+      `${url}/shop/categories/${categoryId}/products/page`,
       {
         page: page,
         pagesize: rowsPerPage,
-        category: categoryId,
       },
       {
         headers: { token: token },
@@ -243,6 +242,7 @@ export const GetProductsByCategory = async (
       page: response.data.data.page,
       total: response.data.data.total,
       totalNumbers: response.data.data.totalNumbers,
+      pagesize: response.data.data.pagesize,
     };
   } catch (error) {
     enqueueSnackbar("Network Error", { variant: "error" });
@@ -277,9 +277,86 @@ export const GetProductsAll = async (
       page: response.data.data.page,
       total: response.data.data.total,
       totalNumbers: response.data.data.totalNumbers,
-      pagesize: response.data.data.pagesize
+      pagesize: response.data.data.pagesize,
     };
   } catch (error) {
     enqueueSnackbar("Network Error", { variant: "error" });
+  }
+};
+
+export const AddToCart = async (
+  productId: string,
+  enqueueSnackbar: (message: string, options?: object) => void
+) => {
+  try {
+    const token = getCookie("token");
+    const response = await axios.post(
+      `${url}/shop/cart`,
+      {
+        product: productId,
+      },
+      {
+        headers: { token: token },
+      }
+    );
+    if (response.data.status == "error") {
+      return enqueueSnackbar(
+        response.data.error ? response.data.error : "Error",
+        { variant: "error" }
+      );
+    }
+    const count_response = await axios.get(`${url}/shop/cart/count`, {
+      headers: { token: token },
+    });
+    if (count_response.data.status == "error") {
+      return enqueueSnackbar(
+        response.data.error ? response.data.error : "Error",
+        { variant: "error" }
+      );
+    }
+    enqueueSnackbar("Successfully Added to the Cart", { variant: "success" });
+    return count_response.data.data;
+  } catch (error) {
+    enqueueSnackbar("Already Added to the Cart", { variant: "error" });
+  }
+};
+
+export const GetCartCount = async (
+  enqueueSnackbar: (message: string, options?: object) => void
+) => {
+  try {
+    const token = getCookie("token");
+    const count_response = await axios.get(`${url}/shop/cart/count`, {
+      headers: { token: token },
+    });
+    if (count_response.data.status == "error") {
+      return enqueueSnackbar(
+        count_response.data.error ? count_response.data.error : "Error",
+        { variant: "error" }
+      );
+    }
+    return count_response.data.data;
+  } catch (error) {
+    enqueueSnackbar("Already Added to the Cart", { variant: "error" });
+  }
+};
+
+export const GetShopCart = async (
+  enqueueSnackbar: (message: string, options?: object) => void
+) => {
+  try {
+    const token = getCookie("token");
+    const response = await axios.get(`${url}/shop/cart`, {
+      headers: { token: token },
+    });
+    if (response.data.status == "error") {
+      return enqueueSnackbar(
+        response.data.error ? response.data.error : "Error",
+        { variant: "error" }
+      );
+    }
+    console.log(response.data)
+    return(response.data.data);
+  } catch (error) {
   }
 };
