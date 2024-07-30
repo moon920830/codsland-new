@@ -317,7 +317,7 @@ export const AddToCart = async (
     enqueueSnackbar("Successfully Added to the Cart", { variant: "success" });
     return count_response.data.data;
   } catch (error) {
-    enqueueSnackbar("Already Added to the Cart", { variant: "error" });
+    enqueueSnackbar("Network Error", { variant: "error" });
   }
 };
 
@@ -337,7 +337,7 @@ export const GetCartCount = async (
     }
     return count_response.data.data;
   } catch (error) {
-    enqueueSnackbar("Already Added to the Cart", { variant: "error" });
+    enqueueSnackbar("Network Error", { variant: "error" });
   }
 };
 
@@ -358,5 +358,31 @@ export const GetShopCart = async (
     console.log(response.data)
     return(response.data.data);
   } catch (error) {
+    enqueueSnackbar("Network Error", { variant: "error" });
   }
 };
+
+export const HandleProductCount = async (
+    productId: string,
+    count: number,
+    enqueueSnackbar: (message: string, options?: object) => void
+) => {
+    try {
+        const token = getCookie("token");
+        const response = await axios.post(`${url}/shop/cart/${productId}/count`, {
+            count : count
+        }, {
+            headers: { token: token },
+          });
+          if (response.data.status == "error") {
+            return enqueueSnackbar(
+              response.data.error ? response.data.error : "Error",
+              { variant: "error" }
+            );
+          }
+          return "success"
+
+    } catch (error) {
+        enqueueSnackbar("Network Error", { variant: "error" });
+    }
+}
