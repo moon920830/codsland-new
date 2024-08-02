@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 
 import Description from "./description";
 import { HandleProductCount } from "../../api/api";
@@ -53,7 +53,7 @@ const CartCard: React.FC<CartCardType> = (props) => {
   };
 
   return (
-    <div className="shadow-2xl bg-gray-300 py-5 px-5 grid grid-cols-5 gap-5">
+    <div className="shadow-2xl py-5 px-5 grid grid-cols-5 gap-5">
       <div className="col-span-1">
         <img
           src={`${url}/${props.productId}/image`}

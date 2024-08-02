@@ -355,34 +355,195 @@ export const GetShopCart = async (
         { variant: "error" }
       );
     }
-    console.log(response.data)
-    return(response.data.data);
+    console.log(response.data);
+    return response.data.data;
   } catch (error) {
     enqueueSnackbar("Network Error", { variant: "error" });
   }
 };
 
 export const HandleProductCount = async (
-    productId: string,
-    count: number,
-    enqueueSnackbar: (message: string, options?: object) => void
+  productId: string,
+  count: number,
+  enqueueSnackbar: (message: string, options?: object) => void
 ) => {
-    try {
-        const token = getCookie("token");
-        const response = await axios.post(`${url}/shop/cart/${productId}/count`, {
-            count : count
-        }, {
-            headers: { token: token },
-          });
-          if (response.data.status == "error") {
-            return enqueueSnackbar(
-              response.data.error ? response.data.error : "Error",
-              { variant: "error" }
-            );
-          }
-          return "success"
-
-    } catch (error) {
-        enqueueSnackbar("Network Error", { variant: "error" });
+  try {
+    const token = getCookie("token");
+    const response = await axios.post(
+      `${url}/shop/cart/${productId}/count`,
+      {
+        count: count,
+      },
+      {
+        headers: { token: token },
+      }
+    );
+    if (response.data.status == "error") {
+      return enqueueSnackbar(
+        response.data.error ? response.data.error : "Error",
+        { variant: "error" }
+      );
     }
+    return "success";
+  } catch (error) {
+    enqueueSnackbar("Network Error", { variant: "error" });
+  }
+};
+
+export const HandlePurchase = async (
+  email: string,
+  phone: string,
+  date: Date | null,
+  location: string,
+  street: string,
+  city: string,
+  state: string,
+  country: string,
+  zip: string,
+  enqueueSnackbar: (message: string, options?: object) => void
+) => {
+  try {
+    const token = getCookie("token");
+    const response = await axios.post(
+      `${url}/shop/orders/save`,
+      {
+        email,
+        phone,
+        date,
+        location,
+        street,
+        city,
+        state,
+        country,
+        zip,
+      },
+      {
+        headers: { token: token },
+      }
+    );
+    if (response.data.status == "error") {
+      console.log("hello");
+      return enqueueSnackbar(
+        response.data.error ? response.data.error : "Error",
+        { variant: "error" }
+      );
+    }
+    console.log(response.data.data);
+    return response.data.data;
+  } catch (error) {
+    enqueueSnackbar("Please Enter Your Correct Address", { variant: "error" });
+    return "error";
+  }
+};
+
+export const PutSelectRate = async (
+  order_id: string,
+  param_rate: string,
+  enqueueSnackbar: (message: string, options?: object) => void
+) => {
+  try {
+    const token = getCookie("token");
+    const response = await axios.put(
+      `${url}/shop/orders/shipment`,
+      {
+        order_id: order_id,
+        rate: param_rate,
+      },
+      {
+        headers: { token: token },
+      }
+    );
+    if (response.data.status == "error") {
+      console.log("hello");
+      return enqueueSnackbar(
+        response.data.error ? response.data.error : "Error",
+        { variant: "error" }
+      );
+    }
+    return "success";
+  } catch (error) {}
+};
+
+export const GetOrders = async (
+  id: string,
+  enqueueSnackbar: (message: string, options?: object) => void
+) => {
+  try {
+    const token = getCookie("token");
+    const response = await axios.get(`${url}/shop/orders/${id}`, {
+      headers: { token: token },
+    });
+    if (response.data.status == "error") {
+      return enqueueSnackbar(
+        response.data.error ? response.data.error : "Error",
+        { variant: "error" }
+      );
+    }
+    const data = response.data.data;
+    let rate_from_back;
+    if (data.shipping_rate !== null && data.shipping_rate !== undefined) {
+      rate_from_back = data.shipping_rate;
+    } else {
+      rate_from_back = data.shipping_info.rates[0];
+      PutSelectRate(id, rate_from_back, enqueueSnackbar);
+    }
+    return { shippingInfo: data.shipping_info, rateFromBack: rate_from_back };
+  } catch (error) {
+    enqueueSnackbar("NetWork Error", { variant: "error" });
+  }
+};
+
+export const CreatePaymentIntent = async (
+  total: number,
+  enqueueSnackbar: (message: string, options?: object) => void
+) => {
+  try {
+    const token = getCookie("token");
+    const response = await axios.post(
+      `${url}/test/create-payment-intent`,
+      {
+        amount: total * 100,
+      },
+      {
+        headers: { token: token },
+      }
+    );
+    if (response.data.status == "error") {
+      return enqueueSnackbar(
+        response.data.error ? response.data.error : "Error",
+        { variant: "error" }
+      );
+    }
+    return response.data.clientSecret;
+  } catch (error) {
+    enqueueSnackbar("NetWork Error", { variant: "error" });
+  }
+};
+
+export const OrderPurchase = async (
+  id: string,
+  result: any,
+  enqueueSnackbar: (message: string, options?: object) => void
+) => {
+  try{
+    const token = getCookie("token");
+    const response = await axios.post(
+      `${url}/test/create-payment-intent`,
+      {
+        result, order: id
+      },
+      {
+        headers: { token: token },
+      }
+    );
+    if (response.data.status == "error") {
+      return enqueueSnackbar(
+        response.data.error ? response.data.error : "Error",
+        { variant: "error" }
+      );
+    }
+    enqueueSnackbar("Successfully Purchase", { variant: "success" });
+  } catch(error) {
+    enqueueSnackbar("NetWork Error", { variant: "error" });
+  }
 }
