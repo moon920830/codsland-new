@@ -53,15 +53,15 @@ const CartCard: React.FC<CartCardType> = (props) => {
   };
 
   return (
-    <div className="shadow-2xl py-5 px-5 grid grid-cols-5 gap-5">
-      <div className="col-span-1">
+    <div className="shadow-2xl py-5 px-5 grid lg:grid-cols-5 gap-5">
+      <div className="lg:col-span-1">
         <img
           src={`${url}/${props.productId}/image`}
           alt="img"
-          className="h-[150px] w-[150px]"
+          className="h-[150px] w-[150px] m-auto"
         />
       </div>
-      <div className="col-span-3">
+      <div className="lg:col-span-3">
         <div className="text-xl font-semibold text-[#2E3192] mt-2 w-full">
           {props.title}
         </div>
@@ -73,17 +73,17 @@ const CartCard: React.FC<CartCardType> = (props) => {
           sx={{ marginTop: "10px" }}
         />
       </div>
-      <div className="col-span-1 flex flex-col">
+      <div className="lg:col-span-1 flex flex-row items-center lg:flex-col">
         <DeleteForeverIcon
           sx={{ color: "#2E3192", marginLeft: "auto", cursor: "pointer" }}
         />
-        <div className="text-xl font-semibold text-[#2E3192] mt-2 ml-auto">
+        <div className="text-xl font-semibold text-[#2E3192] lg:mt-2 ml-auto">
           price: ${props.price}
         </div>
-        <div className="text-xl font-semibold text-[#2E3192] mt-2 ml-auto">
+        <div className="text-xl font-semibold text-[#2E3192] lg:mt-2 ml-auto">
           ${props.price * props.count}
         </div>
-        <div className="text-xl font-semibold text-[#2E3192] mt-auto ml-auto flex flex-row gap-2 items-center">
+        <div className="text-xl font-semibold text-[#2E3192] lg:mt-auto ml-auto flex flex-row gap-2 items-center">
           <IconButton
             sx={{
               width: "20px",

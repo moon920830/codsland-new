@@ -76,8 +76,11 @@ const Shop: React.FC = () => {
   };
 
   return (
-    <div className="mx-20 flex pt-[150px] pb-[100px] gap-5">
-      <div className="basis-4/12">
+    <div className="mx-5 sm:mx-20 lg:flex pt-[50px] sm:pt-[150px] pb-[100px] gap-5">
+      <div className="lg:hidden">
+        <ShopFilter setCategoryId={setCategoryId} />
+      </div>
+      <div className="hidden lg:block basis-4/12">
         <ShopFilter setCategoryId={setCategoryId} />
       </div>
       <div className="basis-8/12 shadow-2xl py-10 px-5">
@@ -111,9 +114,9 @@ const Shop: React.FC = () => {
         </div>
       </div>
       <Link to="/shop/cart">
+      <div className=" fixed bottom-[50px] right-[20px] sm:bottom-[100px] sm:right-[80px]">
       <SpeedDial
         ariaLabel="SpeedDial basic example"
-        sx={{ position: "fixed", bottom: 100, right: 80 }}
         icon={
           <div className="text-center">
             <AddShoppingCartIcon sx={{ marginLeft: "10px" }} />
@@ -125,6 +128,7 @@ const Shop: React.FC = () => {
           </div>
         }
       />
+      </div>
       </Link>
     </div>
   );

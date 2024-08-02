@@ -212,7 +212,7 @@ const Cart: React.FC = () => {
     setActiveStep(0);
   };
   return (
-    <div className="px-[100px] pt-[150px] pb-[50px]">
+    <div className="px-[20px] sm:px-[100px] pt-[150px] pb-[50px]">
       <Stepper activeStep={activeStep}>
         {steps.map((label, index) => {
           const stepProps: { completed?: boolean } = {};
@@ -229,7 +229,7 @@ const Cart: React.FC = () => {
           }
           return (
             <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
+             <StepLabel {...labelProps}> <div className="hidden sm:block">{label}</div></StepLabel>
             </Step>
           );
         })}
@@ -301,7 +301,7 @@ const Cart: React.FC = () => {
                 );
               case 1:
                 return (
-                  <div className="shadow-2xl bg-white py-5 px-5 mt-10 w-[600px] m-auto rounded-lg">
+                  <div className="shadow-2xl bg-white py-5 px-5 mt-10 w-[300px] sm:w-[600px] m-auto rounded-lg">
                     <FormControl sx={{ width: "100%" }} variant="outlined">
                       <InputLabel htmlFor="standard-adornment-password">
                         Email
