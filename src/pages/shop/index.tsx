@@ -64,6 +64,7 @@ const Shop: React.FC = () => {
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
+    console.log(event);
     setPage(newPage);
   };
 
