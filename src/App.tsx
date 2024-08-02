@@ -9,10 +9,10 @@ import ForgetPassword from './pages/forget-password';
 import ResetPassword from './pages/reset-password';
 import NewPassword from './pages/new-password';
 import Register from './pages/register';
-import Schedule from './pages/schedule';
 import Annual from './pages/memberships/annual';
 import Shop from './pages/shop';
 import Cart from './pages/shop/cart';
+import Schedule from './pages/schedule';
 import './index.css'
 
 const App: React.FC = () => {
