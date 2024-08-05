@@ -1,27 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Calendar, Event, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
+
+import { GetAppointsAndEvents } from "../../api/api";
+import { useSnackbar } from "notistack";
+
 import "moment-timezone";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const localizer = momentLocalizer(moment);
 
-const events: Event[] = [
-  {
-    title: "All Day Event",
-    start: new Date(),
-    end: new Date(),
-    allDay: true,
-  },
-  {
-    title: "Long Event",
-    start: new Date(2024, 6, 1),
-    end: new Date(2024, 6, 2),
-  },
-  // Add more events here
-];
+interface EventType {
+  title: string;
+  start: Date;
+  end: Date;
+  allDay?: boolean;
+}
 
 const Schedule: React.FC = () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const [events, setEvents] = useState<EventType[]>([]);
+  useEffect(() => {
+    const firstDay = new Date(2023, 0, 1);
+    const lastDay = new Date(2024, 11, 31);
+    const range = { start: firstDay, end: lastDay };
+    const GetData = async () => {
+      const result = await GetAppointsAndEvents(range, enqueueSnackbar);
+      const mappedEvents: EventType[] = result.map((event: any) => ({
+        title: event.title,
+        start: new Date(event.start_date), // Convert ISO string to Date object
+        end: new Date(event.end_date), // Convert ISO string to Date object
+        allDay: event.start_time === 0 && event.end_time === 24, // Example logic for allDay
+      }));
+      setEvents(mappedEvents);
+    };
+    GetData();
+  }, []);
   return (
     <div className="pt-[150px] px-[20px] sm:px-[150px]">
       <Calendar

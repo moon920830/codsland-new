@@ -525,12 +525,13 @@ export const OrderPurchase = async (
   result: any,
   enqueueSnackbar: (message: string, options?: object) => void
 ) => {
-  try{
+  try {
     const token = getCookie("token");
     const response = await axios.post(
       `${url}/test/create-payment-intent`,
       {
-        result, order: id
+        result,
+        order: id,
       },
       {
         headers: { token: token },
@@ -543,7 +544,34 @@ export const OrderPurchase = async (
       );
     }
     enqueueSnackbar("Successfully Purchase", { variant: "success" });
-  } catch(error) {
+  } catch (error) {
     enqueueSnackbar("NetWork Error", { variant: "error" });
   }
-}
+};
+
+export const GetAppointsAndEvents = async (
+  range: any,
+  enqueueSnackbar: (message: string, options?: object) => void
+) => {
+  try {
+    const token = getCookie("token");
+    const response = await axios.post(
+      `${url}/appointments/calendar`,
+      {
+        range,
+      },
+      {
+        headers: { token: token },
+      }
+    );
+    if (response.data.status == "error") {
+      return enqueueSnackbar(
+        response.data.error ? response.data.error : "Error",
+        { variant: "error" }
+      );
+    }
+    return response.data.data.events;
+  } catch (error) {
+    enqueueSnackbar("NetWork Error", { variant: "error" });
+  }
+};
